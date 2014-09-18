@@ -165,7 +165,16 @@ void CircularList<T>::remove(int index)
 
         delete loc;
         loc = after;
-        loc_pos = index;
+
+        if(index == sze)
+        {
+          loc_pos = 1;
+        }
+
+        else
+        {
+          loc_pos = index;
+        }
       }
       sze--;
    } 
