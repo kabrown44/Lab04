@@ -63,21 +63,25 @@ DoubleNode<T>* CircularList<T>::find(int index)
  
    if (index >= loc_pos)
    {
-                                    //distance without the bridge (next refs, positive)
-                                    //distance using the bridge (prev refs, negative)
+      dist_next = index - loc_pos ; //distance without the bridge (next refs, positive)
+      dist_prev = -1 *( (sze -loc_pos) + index); //distance using the bridge (prev refs, negative)
    }
    else
    {
-                                    //distance without the bridge (prev refs, negative)
-                                    //distance using the bridge (next refs, positive)
+      dist_prev = -1 * (loc_pos - index); //distance without the bridge (prev refs, negative)
+      dist_next = (sze - loc_pos) + index //distance using the bridge (next refs, positive)
    }
 
    //DO THIS which distance is smaller?
-   //find the minimum distance using absolute value
-   //set min_dist to the smaller value, keeping the sign
+   if( dist_next < abs(dist_prev))
+   {
+      min_dist = dist_next;
+   } 
 
-
-
+   else
+   {
+      min_dist = dist_prev;
+   }
 
 
 
@@ -134,6 +138,9 @@ void CircularList<T>::animateMovement(bool clockwise, DoubleNode<T>* where)
 template < class T >
 void CircularList<T>::remove(int index) 
 {
+
+    DoubleNode<T>* prev;
+    DoubleNode<T>* after;
    //DO THIS
    //remember to move loc and loc_pos to the location of the removal
    //remember to delete the node after it has been removed from the list
@@ -142,22 +149,23 @@ void CircularList<T>::remove(int index)
 
       if (sze == 1) //special case
       {
-
-
-
-
-
-
+        loc_pos = 1;
+        loc = find(index);
+        delete loc;
+        loc = NULL;
+        loc_pos = 0;
       }
       else
       {
-         //use local variables
+        loc = find(index);
+        after = loc->getNext();
+        prev = loc->getPrev();
 
+        after->setPrev(prev);
+        prev->setNext(after);
 
-
-
-
-
+        delete loc;
+        loc_pos = index;
       }
       sze--;
    } 
